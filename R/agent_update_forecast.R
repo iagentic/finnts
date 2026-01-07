@@ -96,6 +96,9 @@ update_forecast <- function(agent_info,
 
   check_input_type("max_iter", max_iter, "numeric")
   check_input_type("weighted_mape_goal", weighted_mape_goal, "numeric")
+  
+  # get metadata
+  project_info <- agent_info$project_info
 
   # agent info adjustments
   if (agent_info$forecast_approach != "bottoms_up") {
@@ -105,6 +108,7 @@ update_forecast <- function(agent_info,
   # run the workflow
   results <- update_fcst_agent_workflow(
     agent_info = agent_info,
+    project_info = project_info,
     parallel_processing = parallel_processing,
     inner_parallel = inner_parallel,
     num_cores = num_cores,
@@ -122,6 +126,7 @@ update_forecast <- function(agent_info,
 #' This function defines the workflow for updating the forecast agent.
 #'
 #' @param agent_info A list containing the agent information.
+#' @param project_info A list containing the project information.
 #' @param parallel_processing Logical indicating if parallel processing should be used.
 #' @param inner_parallel Logical indicating if inner parallel processing should be used.
 #' @param num_cores Numeric indicating the number of cores to use for parallel processing.
@@ -133,6 +138,7 @@ update_forecast <- function(agent_info,
 # @return A list containing the results of the workflow.
 #' @noRd
 update_fcst_agent_workflow <- function(agent_info,
+                                       project_info,
                                        parallel_processing,
                                        inner_parallel,
                                        num_cores,
@@ -270,7 +276,7 @@ update_fcst_agent_workflow <- function(agent_info,
       max_retry = 3,
       args = list(
         agent_info = agent_info,
-        project_info = agent_info$project_info,
+        project_info = project_info,
         parallel_processing = parallel_processing,
         num_cores = num_cores
       )
